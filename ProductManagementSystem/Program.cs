@@ -17,9 +17,16 @@ builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<ReceiveRequestConsumer>();
     x.SetKebabCaseEndpointNameFormatter();
+
     x.UsingRabbitMq((context, cfg) =>
     {
-       // cfg.Host(builder.Configuration.GetValue<string>("RabbitConnection"));
+        //cfg.ReceiveEndpoint(c =>
+        //{
+        //    c.ConcurrentMessageLimit = 1;
+        //});
+        cfg.UseConcurrencyLimit(1);
+
+        // cfg.Host(builder.Configuration.GetValue<string>("RabbitConnection"));
         cfg.Host(new Uri("rabbitmq://localhost/"), hst =>
         {
             hst.Username(Constants.UserName);

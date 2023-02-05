@@ -21,9 +21,11 @@
 
   <ItemGroup>
     <Reference Include="Contracts">
-      <HintPath>..\..\ClientApi\Contracts\bin\Debug\net6.0\Contracts.dll</HintPath>
+      <HintPath>..\..\..\ClientApi\ClientApi\Contracts\bin\Debug\net6.0\Contracts.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+
 
 
 
