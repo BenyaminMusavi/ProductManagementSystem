@@ -22,16 +22,17 @@ builder.Services.AddMassTransit(x =>
     x.SetKebabCaseEndpointNameFormatter();
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.ConfigureEndpoints(context);
        // cfg.Host(builder.Configuration.GetValue<string>("RabbitConnection"));
         cfg.Host(new Uri("rabbitmq://localhost/"), hst =>
         {
             hst.Username(Constants.UserName);
             hst.Password(Constants.Password);
         });
+        cfg.ConfigureEndpoints(context);
     });
-    x.AddRequestClient<ProductRequest>();
     //x.AddRequestClient<ProductRequest>();
+    //x.AddRequestClient<ProductRequest>();
+    //x.AddRequestClient<ResponseMessage>();
 });
 
 
