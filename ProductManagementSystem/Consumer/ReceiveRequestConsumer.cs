@@ -5,37 +5,44 @@ namespace ProductManagementSystem.Consumer
 {
     public class ReceiveRequestConsumer : IConsumer<Product>
     {
-        private readonly IRequestClient<Product> _client;
+        private readonly IRequestClient<ProductRequest> _client;
 
-        public ReceiveRequestConsumer(IRequestClient<Product> client)
+        public ReceiveRequestConsumer(IRequestClient<ProductRequest> client)
         {
             _client = client;
 
         }
         public async Task Consume(ConsumeContext<Product> context)
         {
-            Console.WriteLine($"Vorod {context.Message.Id}");
-
-            var model = new ProductRequest
+            try
             {
-                Id = context.Message.Id,
-                ProductName = context.Message.ProductName,
-                DateTime = context.Message.DateTime,
-                Amount = context.Message.Amount,
-            };
+                Console.WriteLine($"Vorod {context.Message.Id}");
+
+                var model = new ProductRequest
+                {
+                    Id = context.Message.Id,
+                    ProductName = context.Message.ProductName,
+                    DateTime = context.Message.DateTime,
+                    Amount = context.Message.Amount,
+                };
 
 
-            var message = await _client.GetResponse<ResponseMessage>(new ProductRequest
+                var message = await _client.GetResponse<ResponseMessage>(new ProductRequest
+                {
+                    Id = model.Id,
+                    ProductName = model.ProductName,
+                    DateTime = model.DateTime,
+                    Amount = model.Amount,
+                });
+
+                var m = message.Message.MessageName;
+                Console.WriteLine($"receive {context.Message.Id}      ====>  ");
+
+            }
+            catch (Exception ex)
             {
-                Id = model.Id,
-                ProductName = model.ProductName,
-                DateTime = model.DateTime,
-                Amount = model.Amount,
-            });
-
-            var m = message.Message.MessageName;
-            Console.WriteLine($"receive {context.Message.Id}      ====>  ");
-
+                Console.WriteLine($"{ex.Message}");
+            }
         }
     }
 }

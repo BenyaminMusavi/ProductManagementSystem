@@ -15,10 +15,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddMassTransit(x =>
 {
-    x.AddConsumer<ReceiveRequestConsumer>().Endpoint(e =>
-    {
-        //e.Temporary = false;
-    });
+    x.AddConsumer<ReceiveRequestConsumer>();
     x.SetKebabCaseEndpointNameFormatter();
     x.UsingRabbitMq((context, cfg) =>
     {
@@ -30,9 +27,8 @@ builder.Services.AddMassTransit(x =>
         });
         cfg.ConfigureEndpoints(context);
     });
-    //x.AddRequestClient<ProductRequest>();
-    //x.AddRequestClient<ProductRequest>();
-    //x.AddRequestClient<ResponseMessage>();
+
+    x.AddRequestClient<ProductRequest>();
 });
 
 
